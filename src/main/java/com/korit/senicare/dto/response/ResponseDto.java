@@ -16,7 +16,7 @@ public class ResponseDto {
     private String message;
 
     public static ResponseEntity<ResponseDto> success() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.SUCCCESS, ResponseMessage.SUCCESS);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
@@ -35,13 +35,31 @@ public class ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDto> noExistUserId() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_USER_ID, ResponseMessage.NO_EXIST_USER_ID);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    public static ResponseEntity<ResponseDto> noExistTool() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NO_EXIST_TOOL, ResponseMessage.NO_EXIST_TOOL);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
     public static ResponseEntity<ResponseDto> telAuthFail() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.TEL_AUTH_FAIL, ResponseMessage.TEL_AUTH_FAIL);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+    }
+    public static ResponseEntity<ResponseDto> signInFail() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.Sign_IN_FAIL, ResponseMessage.Sign_IN_FAIL);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> messageSendFail() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.MESSAGE_SEND_FAIL, ResponseMessage.MESSAGE_SEND_FAIL);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+    }
+    public static ResponseEntity<ResponseDto> tokenCreateFail() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.TOKEN_CAREATE_FAIL, ResponseMessage.TOKEN_CAREATE_FAIL);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
