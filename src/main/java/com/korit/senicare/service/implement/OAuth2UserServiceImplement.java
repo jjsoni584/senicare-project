@@ -15,13 +15,12 @@ import com.korit.senicare.entity.NurseEntity;
 import com.korit.senicare.provider.JwtProvider;
 import com.korit.senicare.repository.NurseRepository;
 
-import jakarta.websocket.OnClose;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
-
+    
     private final JwtProvider jwtProvider;
 
     private final NurseRepository nurseRepository;
@@ -36,10 +35,10 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
         //     System.out.println("=========================================================================");
         //     System.out.println(new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
         //     System.out.println(oAuth2User.getName());
-        // } catch (Exception exception) {
+        // } catch(Exception exception) {
         //     exception.printStackTrace();
         // }
-        // String snsId = null;
+
         String snsId = getSnsId(oAuth2User, registration);
 
         NurseEntity nurseEntity = nurseRepository.findBySnsIdAndJoinPath(snsId, registration);
@@ -50,6 +49,7 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
             Map<String, Object> attributes = new HashMap<>();
             attributes.put("snsId", snsId);
             attributes.put("joinPath", registration);
+
             customOAuth2User = new CustomOAuth2User(snsId, attributes, false);
         } else {
             String userId = nurseEntity.getUserId();
@@ -60,18 +60,23 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
 
             customOAuth2User = new CustomOAuth2User(userId, attributes, true);
         }
+
         return customOAuth2User;
 
     }
-    private String getSnsId(OAuth2User oAuth2User, String registration){
+
+    private String getSnsId(OAuth2User oAuth2User, String registration) {
         String snsId = null;
-        if(registration.equals("kakao")){
+
+        if (registration.equals("kakao")) {
             snsId = oAuth2User.getName();
         }
-        if(registration.equals("naver")){
-            Map<String, String> response = (Map<String, String>)oAuth2User.getAttributes().get("response");
-            snsId = response.get("access");
+        if (registration.equals("naver")) {
+            Map<String, String> response = (Map<String, String>) oAuth2User.getAttributes().get("response");
+            snsId = response.get("id");
         }
+
         return snsId;
     }
+
 }
